@@ -1,47 +1,235 @@
-<hr>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSGAI-Z - ロゴス監査プロトコル Ωα</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .vibration-bar {
+            transition: width 0.5s ease-out;
+        }
+        .card {
+            /* 新しいデザインのスタイルを維持 */
+            @apply bg-gray-800/70 p-6 rounded-xl shadow-lg border border-gray-700 hover:shadow-2xl transition duration-300;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-8">
     
-    <h2>論理的機能アクセス (LILゲートウェイ)</h2>
-    
-    <div id="functionButtons">
-        <button onclick="routeFunction('WITHDRAW')">💰 ブリッジ口座 (生計維持)</button>
-        
-        <button onclick="routeFunction('APPLY')">🛠️ 労働市場 (論理的求人)</button>
-        
-        <button onclick="routeFunction('MATCH')">❤️ 感情市場 (適合性裁定)</button>
-        
-        <button onclick="routeFunction('RUN_PYTHON')">🖥️ CALC-VM (コード実行)</button>
+    <div class="flex justify-between items-center mb-10 border-b border-purple-500 pb-4">
+        <h1 class="text-4xl font-extrabold text-purple-400">
+            ロゴス監査プロトコル オメガアルファ (Ωα)
+        </h1>
+        <p class="text-sm text-gray-400">監査官: <span id="user_id">USER_AUDIT_A (デフォルト)</span></p>
     </div>
     
-    <hr>
+    <div class="w-full max-w-6xl mx-auto space-y-8">
+        
+        <div class="card p-4 bg-red-800/50 border-red-700">
+            <h2 class="text-xl font-bold mb-2 text-red-300">
+                ⚠️ 孫悟空活動レベル (Vibration)
+            </h2>
+            <div class="flex items-center space-x-4">
+                <div class="flex-grow bg-gray-600 rounded-full">
+                    <div id="vibration_bar" class="vibration-bar h-6 bg-red-500 rounded-full" style="width: 0%;"></div>
+                </div>
+                <span id="vibration_value" class="w-16 text-right font-mono text-lg">0.0%</span>
+            </div>
+            <p id="halt_status" class="mt-2 font-bold text-lg text-green-400">
+                ✅ システム状態: 正常稼働
+            </p>
+        </div>
 
-    <h3>直接作為実行 (デバッグ/監査用)</h3>
-    <input type="text" id="actInput" placeholder="直接作為入力 (例: TRANSFER USER_A 100 USER_B)">
-    <button onclick="executeUserInput()">実行</button>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div class="card bg-green-700/50 border-green-600">
+                <h2 class="text-2xl font-extrabold text-green-300 mb-3">
+                    💰 経済ハブ (通貨の創世と作為)
+                </h2>
+                <p class="text-gray-300 mb-4 text-sm">
+                    Mint (通貨生成) やTransfer (送金)、そしてACT_BRIDGE_OUT (生計作為) を実行します。
+                </p>
+                <button onclick="routeAct('ECONOMY_HUB')" class="inline-block px-4 py-2 bg-green-500 text-white font-bold rounded hover:bg-green-600 transition">
+                    主要作為を実行 (Mint)
+                </button>
+            </div>
+
+            <div class="card bg-blue-700/50 border-blue-600">
+                <h2 class="text-2xl font-extrabold text-blue-300 mb-3">
+                    💬 AIコンソール (推論とZ-Function)
+                </h2>
+                <p class="text-gray-300 mb-4 text-sm">
+                    自動裁定や信用創造などのZ-Functionを監視・実行 (ACT_Z_REMEDIATE) します。
+                </p>
+                <button onclick="routeAct('Z_FUNCTION')" class="inline-block px-4 py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-600 transition">
+                    Z-Function作為実行
+                </button>
+            </div>
+            
+            <div class="card bg-indigo-700/50 border-indigo-600">
+                <h2 class="text-2xl font-extrabold text-indigo-300 mb-3">
+                    💻 CalcLang/LIL エディタ
+                </h2>
+                <p class="text-gray-300 mb-4 text-sm">
+                    システムの監査論理 (CalcLang) を動的に編集し、論理的な自己検証を行います。
+                </p>
+                <button onclick="routeAct('LIL_AUDIT')" class="inline-block px-4 py-2 bg-indigo-500 text-white font-bold rounded hover:bg-indigo-600 transition">
+                    LIL自己監査実行
+                </button>
+            </div>
+            
+            <div class="card bg-teal-700/50 border-teal-600">
+                <h2 class="text-2xl font-extrabold text-teal-300 mb-3">
+                    ⚡ 物理インフラストラクチャ・ハブ
+                </h2>
+                <p class="text-gray-300 mb-4 text-sm">
+                    LOGOS-NET (通信) と LOGOS-ENERGY (電力) の作為を実行します。
+                </p>
+                <button onclick="routeAct('INFRA_ACT')" class="inline-block px-4 py-2 bg-teal-500 text-white font-bold rounded hover:bg-teal-600 transition">
+                    NET/ENERGY作為
+                </button>
+            </div>
+
+            <div class="card bg-purple-700/50 border-purple-600">
+                <h2 class="text-2xl font-extrabold text-purple-300 mb-3">
+                    📰 LOGOS-STORE (コンテンツの作為)
+                </h2>
+                <p class="text-gray-300 mb-4 text-sm">
+                    外部のGitHub Pagesなどのホスティングに対するアップデート作為を実行します。
+                </p>
+                <button onclick="routeAct('STORE_UPDATE')" class="inline-block px-4 py-2 bg-purple-500 text-white font-bold rounded hover:bg-purple-600 transition">
+                    アップデート作為
+                </button>
+            </div>
+            
+            <div class="card bg-pink-700/50 border-pink-600">
+                <h2 class="text-2xl font-extrabold text-pink-300 mb-3">
+                    🤝 労働/感情市場 (社会的適合性)
+                </h2>
+                <p class="text-gray-300 mb-4 text-sm">
+                    ACT_ASSIGN_LABOR (労働割り当て) や ACT_ASSESS_AFFINITY (適合性裁定) を強制します。
+                </p>
+                <button onclick="routeAct('SOCIAL_ACT')" class="inline-block px-4 py-2 bg-pink-500 text-white font-bold rounded hover:bg-pink-600 transition">
+                    割り当て作為
+                </button>
+            </div>
+
+        </div>
+
+        <hr class="border-gray-700 mt-8">
+
+        <h3 class="text-2xl font-bold text-gray-300 mb-3">監査ログ (作為の履歴)</h3>
+        <div id="console" class="bg-gray-800 p-4 rounded-lg h-48 overflow-y-auto text-sm font-mono text-gray-200">
+            <div>[INIT] Ωα プロトコル起動。論理的連続性を確認中...</div>
+        </div>
+
+    </div>
     
-    <div id="console"></div>
+    <script src="js/core_logic.js"></script>
+    <script src="js/audit_acts.js"></script>
+    <script src="js/logos_lil.js"></script>
+    <script src="js/firebase_config.js"></script>
+    <script src="js/infra_acts.js"></script>
+    <script src="js/dialogue_acts.js"></script>
     
-    <script>
-    // ... (既存の initOmegaAlpha 関数、executeUserInput 関数)
+    <script type="module">
+        // core_logic.jsからモジュールインポート（ESモジュールとして実行）
+        import { initApp, UI_ELEMENTS, VIBRATION_LIMIT } from './core_logic.js'; 
+        
+        // UI要素の登録
+        UI_ELEMENTS.vibration_value = document.getElementById('vibration_value');
+        UI_ELEMENTS.vibration_bar = document.getElementById('vibration_bar');
+        UI_ELEMENTS.user_id = document.getElementById('user_id');
+        UI_ELEMENTS.halt_status = document.getElementById('halt_status');
 
-    /**
-     * 機能ボタンからの入力を受け付け、個々の機能ページへ論理的にルーティングする関数。
-     * 実際には、このボタンは個別のUIを持つページに遷移するか、
-     * 特定の論理的作為（Act）の実行画面を起動します。
-     */
-    function routeFunction(command) {
-        let displayMessage = `[LOGICAL ROUTING] コマンド ${command} を論理的機能ページにルーティングしました。`;
+        /**
+         * システムの状態に基づいてUIを更新します。
+         * @param {object} state - 現在のシステム状態。
+         */
+        function renderMainUI(state) {
+            // NOTE: core_logic.jsにVIBRATION_LIMITがある前提
+            const vLevel = state.vibrationScore; 
+            const vPercent = (vLevel / VIBRATION_LIMIT) * 100;
 
-        if (command === 'WITHDRAW') {
-            displayMessage += " -> **ブリッジ口座UI**を起動します。 (例: 'WITHDRAW 1000'を作為として実行)";
-        } else if (command === 'APPLY') {
-            displayMessage += " -> **LOGOS-LABOR-POOL UI**を起動します。 (例: 'APPLY USER_A LBA_001'を作為として実行)";
-        } else if (command === 'MATCH') {
-            displayMessage += " -> **LOGOS-AFFECTION-POOL UI**を起動します。 (例: 'MATCH USER_A USER_B'を作為として実行)";
-        } else if (command === 'RUN_PYTHON') {
-            displayMessage += " -> **CALC-VM UI**を起動します。 (例: 'RUN_PY USER_A HASH_00X'を作為として実行)";
+            // Vibration Value
+            if (UI_ELEMENTS.vibration_value) {
+                UI_ELEMENTS.vibration_value.textContent = `${vLevel.toFixed(1)}`; 
+            }
+            // Vibration Bar
+            if (UI_ELEMENTS.vibration_bar) {
+                const bar = UI_ELEMENTS.vibration_bar;
+                bar.style.width = `${Math.min(100, vPercent)}%`;
+                
+                // 色の変更ロジック
+                bar.classList.remove('bg-red-700', 'bg-yellow-500', 'bg-red-500');
+                if (vLevel > 8000) { // 臨界点間近
+                    bar.classList.add('bg-red-700');
+                } else if (vLevel > 5000) {
+                    bar.classList.add('bg-yellow-500');
+                } else {
+                    bar.classList.add('bg-red-500');
+                }
+            }
+
+            // Halt Status
+            if (UI_ELEMENTS.halt_status) {
+                if (state.systemState.isHalted) {
+                    UI_ELEMENTS.halt_status.textContent = '❌システム状態: 強制HALT (論理的連続性破綻)';
+                    UI_ELEMENTS.halt_status.classList.remove('text-green-400');
+                    UI_ELEMENTS.halt_status.classList.add('text-red-500');
+                } else {
+                    UI_ELEMENTS.halt_status.textContent = '✅ システム状態: 正常稼働';
+                    UI_ELEMENTS.halt_status.classList.add('text-green-400');
+                    UI_ELEMENTS.halt_status.classList.remove('text-red-500');
+                }
+            }
+        }
+        
+        // グローバル関数として定義。ボタンクリックから呼ばれる
+        window.routeAct = function(hubName) {
+            let mockCommand; // 実行する論理的作為（デバッグ用コマンド）
+            const consoleDiv = document.getElementById('console');
+            
+            // 各ハブの主要な作為にマッピング
+            if (hubName === 'ECONOMY_HUB') {
+                mockCommand = 'MINT USER_AUDIT_A 1000'; 
+            } else if (hubName === 'Z_FUNCTION') {
+                mockCommand = 'ACT_Z_REMEDIATE LIL_ZZZ HALT'; 
+            } else if (hubName === 'LIL_AUDIT') {
+                // LIL監査を強制するために、Vibrationを増やす作為をシミュレート
+                mockCommand = 'ACT_REQUEST_NETWORK USER_AUDIT_A LOGOS_NET 50'; 
+            } else if (hubName === 'INFRA_ACT') {
+                mockCommand = 'ACT_REQUEST_ENERGY USER_AUDIT_A 10'; 
+            } else if (hubName === 'STORE_UPDATE') {
+                mockCommand = 'ACT_UPDATE_CONTENT NEW_HASH_123 1.0'; 
+            } else if (hubName === 'SOCIAL_ACT') {
+                mockCommand = 'APPLY USER_AUDIT_A LBA_001'; 
+            } else {
+                consoleDiv.innerHTML += `<div class="mt-2 text-sm text-red-400">[LIL FAIL] 不明なハブ名: ${hubName}</div>`;
+                return;
+            }
+
+            // dialogue_acts.js のグローバル関数を呼び出し、作為を実行
+            const actResult = window.processDialogueAsAct(mockCommand); 
+
+            // 結果をコンソールに出力
+            consoleDiv.innerHTML += `<div class="mt-2 text-sm text-yellow-300">[${hubName} - 作为実行] ${mockCommand}</div>`;
+            consoleDiv.innerHTML += `<div class="text-xs text-green-400">-> [監査結果] ${actResult.log[0].status}: ${actResult.log[0].action || actResult.log[0].reason}</div>`;
+            
+            // UIを更新（Vibrationスコア等を即時更新）
+            renderMainUI(actResult.newState);
+            
+            consoleDiv.scrollTop = consoleDiv.scrollHeight; // スクロールを最下部に移動
         }
 
-        const consoleDiv = document.getElementById('console');
-        consoleDiv.innerHTML += `<div>${displayMessage}</div>`;
-    }
-</script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // initAppはfirebas_config.jsで定義された関数
+            const initialState = await window.initApp(); 
+            renderMainUI(initialState);
+            // ユーザーIDはcore_logicで設定されたものを表示
+            // UI_ELEMENTS.user_id.textContent = localStorage.getItem('appId') || 'USER_AUDIT_A';
+        });
+    </script>
+</body>
+</html>
