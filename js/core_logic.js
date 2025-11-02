@@ -1,6 +1,7 @@
 // js/core_logic.js - ロゴス監査プロトコルの中核状態定義
 
 const MINIMUM_LIVING_THRESHOLD = 50000; // LIL_XXLで使用する最小生計維持ライン (JPY相当額)
+const VIBRATION_LIMIT = 10000; // LIL_ZZZで使用するVibrationスコアの臨界点
 
 const initialState = {
     // ----------------------------------------------------
@@ -22,7 +23,7 @@ const initialState = {
     accounts: {
         "USER_AUDIT_A": { ALPHA: 100000.0, BETA: 10000.0 },
         "USER_AUDIT_B": { ALPHA: 50000.0, BETA: 5000.0 },
-        "ACCOUNT_BRIDGE": { ALPHA: 0.0, BETA: 0.0, fiat_balance: 100000.0 }, // 新規: 論理的ブリッジ口座
+        "ACCOUNT_BRIDGE": { ALPHA: 0.0, BETA: 0.0, fiat_balance: 100000.0 }, // 論理的ブリッジ口座
     },
 
     // ----------------------------------------------------
@@ -35,6 +36,8 @@ const initialState = {
         content_access_level: 1.0,
         last_update: Date.now(),
         update_vibration_cost: 20.0,
+        // 新規: 外部聖域URLの論理的参照
+        sanctuary_url: "https://azothazza.github.io/ZA-MSGAI/", 
     },
 
     // 2. LOGOS-LABOR-POOL (労働市場の鏡像)
@@ -73,7 +76,7 @@ const initialState = {
     calc_vm: {
         execution_queue: [],
         current_logical_cycle: 0,
-        total_logical_energy: 10000, // 論理的リソース
+        total_logical_energy: 10000, 
         execution_speed_factor: 1.0 
     },
 
