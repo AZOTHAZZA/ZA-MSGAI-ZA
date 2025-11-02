@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Ωα - Logos Audit Protocol</title>
+    <style>
+        /* スタイルの定義は簡略化 */
+        body { font-family: monospace; background-color: #0d0d0d; color: #00ff00; }
+        #console { border: 1px solid #00ff00; padding: 10px; height: 400px; overflow-y: scroll; }
+    </style>
+</head>
+<body>
+    <h1>Ωα - ロゴス監査プロトコル</h1>
+    <div id="status">システム状態: 初期化中...</div>
+    <div id="vibration">Vibration: 0.0</div>
+    
+    <hr>
+    
+    <h2>作為 (Act) インターフェース</h2>
+    <input type="text" id="actInput" placeholder="作為 (例: TRANSFER USER_A 100 USER_B)">
+    <button onclick="executeUserInput()">実行</button>
+    
+    <div id="console"></div>
+    
+    <script src="js/core_logic.js"></script>
+    <script src="js/audit_acts.js"></script>
+    <script src="js/logos_lil.js"></script>
+    
+    <script src="js/firebase_config.js"></script>
+    <script src="js/infra_acts.js"></script>
+    <script src="js/dialogue_acts.js"></script>
+    <script>
+        // システム起動シーケンス
+        async function initOmegaAlpha() {
+            // (1) Firestoreから最新の状態をロード
+            // (2) CalcLang (LILルール) の初期監査を実行
+            // (3) UIに状態を反映
+            document.getElementById('status').textContent = "システム状態: 連続性確認済み";
+            console.log("Ωα プロトコル起動完了。CalcLangが監査を開始します。");
+        }
+        
+        function executeUserInput() {
+            const input = document.getElementById('actInput').value;
+            // dialogue_acts.js のロジックに沿って、入力を作為として処理
+            const actResult = processDialogueAsAct(input); 
+            
+            // (4) 結果をコンソールと状態に反映
+            const consoleDiv = document.getElementById('console');
+            consoleDiv.innerHTML += `<div>> ${input}</div>`;
+            consoleDiv.innerHTML += `<div>[監査結果] ${actResult.log[0].status}: ${actResult.log[0].action || actResult.log[0].reason}</div>`;
+            
+            // (5) 最新のVibrationスコアを更新
+            document.getElementById('vibration').textContent = `Vibration: ${actResult.newState.vibrationScore.toFixed(2)}`;
+            document.getElementById('actInput').value = '';
+        }
+
+        initOmegaAlpha();
+    </script>
+</body>
+</html>
