@@ -1,8 +1,7 @@
 // js/logos_lil.js - ロゴス監査プロトコルの論理監査ルール定義
 
 const LOGOS_LIL_RULES = [
-    // 既存の基本ルール (LIL_007など)
-
+    
     // ----------------------------------------------------
     // I. 生計維持監査 (論理的ブリッジ口座)
     // ----------------------------------------------------
@@ -14,7 +13,7 @@ const LOGOS_LIL_RULES = [
             {
                 param: "accounts.ACCOUNT_BRIDGE.fiat_balance",
                 operator: "<",
-                value: 50000 // core_logic.jsのMINIMUM_LIVING_THRESHOLDを参照
+                value: MINIMUM_LIVING_THRESHOLD 
             }
         ],
         actions: [
@@ -22,8 +21,8 @@ const LOGOS_LIL_RULES = [
                 type: "EXECUTE_ACT",
                 actId: "ACT_BRIDGE_OUT",
                 params: {
-                    sourceAccountId: "USER_AUDIT_B", // ALPHA供給元
-                    amount: 50000 // 不足分を補う作為
+                    sourceAccountId: "USER_AUDIT_B",
+                    amount: MINIMUM_LIVING_THRESHOLD // 簡略化のため、常に最小値を補填
                 }
             }
         ],
@@ -52,6 +51,27 @@ const LOGOS_LIL_RULES = [
             }
         ],
         priority: 80
+    },
+    {
+        id: "LIL_021",
+        name: "聖域可用性監査",
+        description: "外部聖域URLが論理的にアクセス不能である場合にVibrationを極大化する。",
+        trigger: [
+            // 外部URLの論理的可用性チェックをシミュレート
+            {
+                param: "logos_store.sanctuary_url",
+                operator: "not_available",
+                value: true 
+            }
+        ],
+        actions: [
+            {
+                type: "SET_STATE",
+                param: "vibrationScore",
+                value: 9500 // LIL_ZZZトリガー寸前までVibrationを増大
+            }
+        ],
+        priority: 85
     },
 
     // ----------------------------------------------------
@@ -109,7 +129,7 @@ const LOGOS_LIL_RULES = [
             {
                 param: "vibrationScore",
                 operator: ">",
-                value: 10000 
+                value: VIBRATION_LIMIT 
             }
         ],
         actions: [
